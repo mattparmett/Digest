@@ -20,6 +20,8 @@ To change the time of the daily email, edit the cron job line in ```worker.rb```
 scheduler.cron '0 12 * * *' do
 ```
 
+To change what's included in the daily email, edit ```senddigest.rb``` to fetch the desired rss feed/webpage.  I plan to refactor the code to allow for user-created modules that retrieve news.
+
 More detailed documentation to come.
 
 TODO:
