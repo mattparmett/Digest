@@ -12,7 +12,7 @@ heroku add:config gmail_user=[gmail username] gmail_password=[gmail password] em
 
 To test:
 ```
-heroku run "ruby cron.d/senddigest.rb"
+heroku run "ruby lib/senddigest.rb"
 ```
 
 To change the time of the daily email, edit the cron job line in ```worker.rb```:
