@@ -68,7 +68,6 @@ class DigestRSS
 		@feeds.each do |feed|
 			#Special template for baseball news
 			#I place this news directly below the score, so I don't want an <h2>
-			puts feed['type']
 			if feed['type'] == 'sports'
 				html = %{<ul>
 					<% @stories[feed['name']].each do |story| %>

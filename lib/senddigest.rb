@@ -95,7 +95,6 @@ today = Date.today.components()
 ###
 body = ERB.new(@template)
 email_body = Sanitize.clean(body.result, :elements => ['a', 'h1', 'h2', 'h3', 'p', 'ul', 'li'], :attributes => {'a' => ['href']}, :protocols => {'a' => {'href' => ['http', 'https', 'mailto']}})
-puts email_body
 Pony.mail({
 	:to => @to_email,
 	:sender => @from_email,
