@@ -11,7 +11,7 @@ server_thread = Thread.new { server.start }
 # start scheduler in foreground
 scheduler = Rufus::Scheduler.start_new
 scheduler.cron '0 12 * * *' do
-	`ruby 'cron.d/senddigest.rb'`
+	`ruby 'lib/senddigest.rb'`
 end
 scheduler.join
 
