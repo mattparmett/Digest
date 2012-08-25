@@ -1,5 +1,7 @@
 # Digest #
 
+Digest is an extensible platform written in Ruby for sending a daily email newsletter.  Digest is meant to be deployed to a free Heroku instance and used personally; Digest is written to only accept one subscribed email address.  On a certain schedule (configurable -- see below), Digest will execute configured plugins and use their output to construct and send an HTML email.
+
 ## Installation ##
 
 ```
@@ -48,6 +50,20 @@ The plugin name configured in ```config.yml``` must be the same as the name of t
 def initialize(config)
 	# config is a hash containing the keys/values passed in config.yml
 	# For example, config['name'] is the plugin name
+end
+```
+
+And here's an example ```to_html()``` method, from ```digesteveningedition.rb```:
+
+```ruby
+def to_html()
+	@html = %{<h2>Evening Edition Headlines</h2>
+		<% @ee_stories.each_pair do |title,story| %>
+			<h3><%= title %></h3>
+			<p><%= story %></p>
+		<% end %>
+		}.gsub(/^  /, '')
+	return ERB.new(@html).result(binding)
 end
 ```
 
