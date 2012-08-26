@@ -3,7 +3,7 @@ require "rufus/scheduler"
 
 # start http server in background thread
 server = Rack::Server.new(
-  :config => File.expand_path("../config.ru", __FILE__),
+  :config => File.expand_path("../../config.ru", __FILE__),
   :Port   => ENV["PORT"]
 )
 server_thread = Thread.new { server.start }
