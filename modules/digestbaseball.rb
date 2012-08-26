@@ -4,7 +4,8 @@
 require 'rubygems'
 require 'rss'
 require 'open-uri'
-require 'date'
+require 'mechanize'
+require File.expand_path(File.dirname(__FILE__)) + '/../lib/date.rb' #Date override
 require File.expand_path(File.dirname(__FILE__)) + '/digestrss.rb'
 require 'erb'
 

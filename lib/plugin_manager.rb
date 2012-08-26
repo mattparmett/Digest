@@ -1,6 +1,6 @@
 #Helper class to manage plugins
 class PluginManager
-	attr_accessor :plugins
+	attr_reader :plugins
 	
 	def initialize()
 		load_plugins()
@@ -17,7 +17,7 @@ class PluginManager
 				className = pluginConfig['name']
 				requireName = pluginConfig['require'] || "#{className.downcase}"
 			  end
-			  require File.expand_path(File.dirname(__FILE__)) + "/modules/" + requireName
+			  require File.expand_path(File.dirname(__FILE__)) + "/../modules/" + requireName
 			  plugin = Kernel.const_get(className).new(pluginConfig)
 			  @plugins << plugin
 		  end
