@@ -23,7 +23,7 @@ heroku add:config gmail_user=[gmail username] gmail_password=[gmail password] em
 
 Your login credentials are stored as envirnomental variables, so they're inaccessible outside of your Heroku instance of Digest.
 
-To change the time of the daily email, edit the cron job line in ```worker.rb```:
+To change the time of the daily email, edit the cron job line in ```bin/worker.rb```:
 ```
 scheduler.cron '0 12 * * *' do
 ```
@@ -38,11 +38,11 @@ At minimum, you must pass the plugin's name, which must be the same as the plugi
 
 Digest features a (rudimentary) plugin system to allow you to easily generate and include html content in the digest email.
 
-Plugins are ```.rb``` files located in ```lib/modules/```.  All plugins located in that directory are loaded and executed by ```senddigest.rb```, so there are some guidelines to ensure uniformity (see included plugins for reference):
+Plugins are ```.rb``` files located in ```modules/```.  All plugins located in that directory are loaded and executed by ```senddigest.rb``` via ```plugin_manager.rb```, so there are some guidelines to ensure uniformity (see included plugins for reference):
 
 ### The Plugin Class ###
 
-While the plugin's ```.rb``` file can include multiple classes, there must be one class that has a method titled ```to_html()```.  The ```to_html()``` method is responsible for returning valid html to ```senddigest.rb``` to be included in the Digest email.  The plugins I've written use ERB to programmatically create valid html.  The html returned by ```to_html()``` is placed inside ```<body>``` tags, below the email title (an ```<h1>```).
+While the plugin's ```.rb``` file can include multiple classes, there must be one class that has a method titled ```to_html()```.  The ```to_html()``` method is responsible for returning valid html to ```senddigest.rb``` to be included in the Digest email.  The plugins I've written use ERB to programmatically create valid html.  The html returned by ```to_html()``` is placed inside ```<body>``` tags, below the email title (an ```<h1>```).  Essentially, Digest acts as a messenger: it aggregates html output from all plugins into a single email body and sends that email to the designated recipient.
 
 The plugin name configured in ```config.yml``` must be the same as the name of the class that includes the ```to_html()``` method.  The plugin manager automatically creates a new instance of this class when Digest is executed; therefore, you should use this class's ```initialize``` method to retrieve configuration data from ```config.yml``` like so:
 
@@ -57,6 +57,9 @@ And here's an example ```to_html()``` method, from ```digesteveningedition.rb```
 
 ```ruby
 def to_html()
+	#Scrape stories into @ee_stories hash
+	self.scrape()
+	
 	@html = %{<h2>Evening Edition Headlines</h2>
 		<% @ee_stories.each_pair do |title,story| %>
 			<h3><%= title %></h3>
@@ -73,7 +76,7 @@ Additionally, the plugin's filename is expected to be the lowercase equivalent o
 
 To test:
 ```
-heroku run "ruby lib/senddigest.rb"
+heroku run "ruby bin/senddigest.rb"
 ```
 
 ## Acknowledgements ##
